@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        label 'built-in'
+    }
 
     environment{
         DOCKER_USER ='gokumonkey'
