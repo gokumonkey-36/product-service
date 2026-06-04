@@ -3,38 +3,41 @@ pipeline {
         label 'built-in'
     }
 
-    environment{
-        DOCKER_USER ='gokumonkey'
+    environment {
+        DOCKER_USER = 'gokumonkey'
         TOKEN = "dckr_pat_vHMjHr6LEPU-5_bZln8EdQf_HzY"
         IMAGE_NAME = "product-service"
     }
 
-    stages{
-        stage('Source'){
-            steps{
-                git branch: 'main'
-                url : 'https://github.com/gokumonkey-36/product-service.git'
-                stash name: 'source' , includes: '**/*'
+    stages {
+
+        stage('Source') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/gokumonkey-36/product-service.git'
+
+                stash name: 'source', includes: '**/*'
             }
         }
 
-        stage('Build image'){
-            step{
+        stage('Build image') {
+            steps {
                 sh '''
-                docker build -t ${DOCKER_USER}/${IMAGE_NAME}:${BUILD_NUMBER} . &&
-                docker login -u ${DOCKER_USER} -p ${TOKEN} &&
-                docker push ${DOCKER_USER}/${IMAGE_NAME}:${BUILD_NUMBER}
-                '''    
+                docker build -t ${DOCKER_USER}/${IMAGE_NAME}:1 .
+                docker login -u ${DOCKER_USER} -p ${TOKEN}
+                docker push ${DOCKER_USER}/${IMAGE_NAME}:1
+                '''
             }
         }
 
-        stage('Deploy'){
-            agent{
+        stage('Deploy') {
+            agent {
                 label 'Server'
             }
-            step{
+
+            steps {
                 unstash 'source'
-                
+
                 sh '''
                 kubectl apply -f deployment.yaml
                 '''
