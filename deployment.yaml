@@ -27,7 +27,7 @@ spec:
         app: product-service
     spec:
       containers:
-      - image: gokumonkey/product-service:2
+      - image: gokumonkey/product-service:1
         name: product-microservice
         imagePullPolicy: Always
         ports:
