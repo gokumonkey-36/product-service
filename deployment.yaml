@@ -1,0 +1,34 @@
+apiversion: v1
+kind: Service
+metadata:
+  name: product-svc
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 8001
+  selector:
+    app: product-service
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: product-service
+  template:
+    metadata:
+      labels:
+        app: product-service
+    spec:
+      containers:
+      - image: gokumonkey/product-service:1
+        name: product-microservice
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8001
