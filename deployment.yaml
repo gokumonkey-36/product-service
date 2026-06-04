@@ -17,7 +17,7 @@ kind: Deployment
 metadata:
   name: product-service
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: product-service
@@ -27,7 +27,7 @@ spec:
         app: product-service
     spec:
       containers:
-      - image: gokumonkey/product-service:1
+      - image: gokumonkey/product-service:2
         name: product-microservice
         imagePullPolicy: Always
         ports:
